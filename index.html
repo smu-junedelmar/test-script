@@ -1,5 +1,4 @@
 <script>
-
 (function () {
     function askForPassword() {
         let password;
@@ -10,6 +9,7 @@
                 alert("❌ You must enter the correct password to continue!");
             }
         }
+        localStorage.setItem("tabSwitched", "false"); // Reset flag after correct password
     }
 
     document.addEventListener("visibilitychange", function () {
@@ -30,6 +30,5 @@
         }
     });
 })();
-
 
 </script>
