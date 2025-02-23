@@ -1,34 +1,32 @@
 <script>
-    (function () {
-    function askForPassword() {
-        let password;
-        while (password !== "Bagsak!12345") {
-            alert("⚠️ Switching browser tabs or exiting the CANVAS QUIZ tab is strictly prohibited!\n\nCANVAS logs all quiz activities, and if you are found to have disregarded this rule, you will be penalized based on the total time spent outside the quiz.");
-            password = prompt("🔑 Enter the password to continue:");
-            if (password === null || password.trim() === "") {
-                alert("❌ You must enter the correct password to continue!");
-            }
-        }
-        sessionStorage.setItem("tabSwitched", "false"); // Reset flag after correct password
+    function logToPastebin(message) {
+    const apiKey = "RstlsR9gkezov5vVZb6tD82sbvNLFJh2"; // Your API key (avoid exposing in public code)
+    
+    fetch("https://pastebin.com/api/api_post.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+            api_dev_key: apiKey,
+            api_option: "paste",
+            api_paste_code: `[${new Date().toLocaleString()}] ${message}`,
+            api_paste_private: "1", // 1 = unlisted, 2 = private
+            api_paste_expire_date: "N", // Never expire
+            api_paste_name: "Canvas Quiz Logs"
+        })
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log("Log URL:", data);
+        document.body.innerHTML += `<p>Log saved: <a href="${data}" target="_blank">${data}</a></p>`;
+    })
+    .catch(error => console.error("Error:", error));
+}
+
+// Detect tab switching
+document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+        logToPastebin("⚠️ User switched tabs during Canvas Quiz!");
     }
-
-    document.addEventListener("visibilitychange", function () {
-        if (document.hidden) {
-            sessionStorage.setItem("tabSwitched", "true"); // Mark that tab was switched
-            askForPassword();
-        }
-    });
-
-    window.addEventListener("beforeunload", function (event) {
-        event.preventDefault();
-        event.returnValue = "⚠️ Exiting this page is prohibited!";
-    });
-
-    window.addEventListener("load", function () {
-        if (sessionStorage.getItem("tabSwitched") === "true") {
-            askForPassword();
-        }
-    });
-})();
+});
 
 </script>
