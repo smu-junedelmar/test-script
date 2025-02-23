@@ -1,13 +1,14 @@
 <script>
 document.addEventListener("visibilitychange", function () {
     if (document.hidden) {
-        alert("⚠️ Switching browser tabs or exiting the CANVAS QUIZ tab is strictly prohibited!\n\nCANVAS logs all quiz activities, and if you are found to have disregarded this rule, you will be penalized based on the total time spent outside the quiz.");
         
         let password;
         while (password !== "Bagsak!12345") {
+            alert("⚠️ Switching browser tabs or exiting the CANVAS QUIZ tab is strictly prohibited!\n\nCANVAS logs all quiz activities, and if you are found to have disregarded this rule, you will be penalized based on the total time spent outside the quiz.");
             password = prompt("🔑 Enter the password to continue:");
             if (password === null || password.trim() === "") {
                 alert("❌ You must enter the correct password to continue!");
+                alert("⚠️ Switching browser tabs or exiting the CANVAS QUIZ tab is strictly prohibited!\n\nCANVAS logs all quiz activities, and if you are found to have disregarded this rule, you will be penalized based on the total time spent outside the quiz.");
             }
         }
     }
