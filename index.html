@@ -1,7 +1,18 @@
 <script>
-window.addEventListener("beforeunload", function (event) {
-    event.preventDefault(); // Some browsers require this for custom messages to work
-    event.returnValue = "Are you sure you want to leave this page?";
+document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+        alert("⚠️ Leaving this page is prohibited!");
+        
+        let password = prompt("🔑 Enter the password to continue:");
+        if (password !== "bagsakkana") {
+            alert("❌ Incorrect password! Reloading the page...");
+            document.location.reload(); // Reload the page if the password is wrong
+        }
+    }
 });
 
+window.addEventListener("beforeunload", function (event) {
+    event.preventDefault(); 
+    event.returnValue = "⚠️ Exiting this page is prohibited!";
+});
 </script>
