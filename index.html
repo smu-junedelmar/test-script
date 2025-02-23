@@ -2,17 +2,14 @@
 document.addEventListener("visibilitychange", function () {
     if (document.hidden) {
         alert("⚠️ Leaving this page is prohibited!");
-        
-        let password = prompt("🔑 Enter the password to continue:");
-        if (password !== "bagsakkana") {
-            alert("❌ Incorrect password! Reloading the page...");
-            document.location.reload(); // Reload the page if the password is wrong
+
+        let password;
+        while (password !== "bagsak!12345") {
+            password = prompt("🔑 Enter the password to continue:");
+            if (password === null) {
+                alert("❌ You must enter the correct password to continue!");
+            }
         }
     }
-});
-
-window.addEventListener("beforeunload", function (event) {
-    event.preventDefault(); 
-    event.returnValue = "⚠️ Exiting this page is prohibited!";
 });
 </script>
