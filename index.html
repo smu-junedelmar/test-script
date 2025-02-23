@@ -1,5 +1,5 @@
 <script>
-(function () {
+    (function () {
     function askForPassword() {
         let password;
         while (password !== "Bagsak!12345") {
@@ -9,12 +9,12 @@
                 alert("❌ You must enter the correct password to continue!");
             }
         }
-        localStorage.setItem("tabSwitched", "false"); // Reset flag after correct password
+        sessionStorage.setItem("tabSwitched", "false"); // Reset flag after correct password
     }
 
     document.addEventListener("visibilitychange", function () {
         if (document.hidden) {
-            localStorage.setItem("tabSwitched", "true"); // Mark that tab was switched
+            sessionStorage.setItem("tabSwitched", "true"); // Mark that tab was switched
             askForPassword();
         }
     });
@@ -25,7 +25,7 @@
     });
 
     window.addEventListener("load", function () {
-        if (localStorage.getItem("tabSwitched") === "true") {
+        if (sessionStorage.getItem("tabSwitched") === "true") {
             askForPassword();
         }
     });
