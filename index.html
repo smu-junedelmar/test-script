@@ -1,45 +1,7 @@
 <script>
-    alert("Hello from external JavaScript!");
-    (function () {
-    "use strict";
-
-    // 🔹 Detect Tab Switching
-    document.addEventListener("visibilitychange", function () {
-        if (document.hidden) {
-            alert("Switching tabs is not allowed!");
-            window.focus();
-        }
-    });
-
-    // 🔹 Force Focus on the Tab Every 500ms
-    setInterval(function () {
-        if (document.hidden) {
-            window.focus();
-        }
-    }, 500);
-
-    // 🔹 Prevent Page Exit or Reload
-    window.addEventListener("beforeunload", function (event) {
-        event.preventDefault();
-        event.returnValue = "Are you sure you want to leave?";
-    });
-
-    // 🔹 Disable Right-Click
-    document.addEventListener("contextmenu", function (event) {
-        event.preventDefault();
-    });
-
-    // 🔹 Disable DevTools Shortcuts (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U)
-    document.addEventListener("keydown", function (event) {
-        if (
-            event.key === "F12" ||
-            (event.ctrlKey && event.shiftKey && (event.key === "I" || event.key === "J")) ||
-            (event.ctrlKey && event.key === "U")
-        ) {
-            event.preventDefault();
-        }
-    });
-
-})();
-
+document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+        alert("⚠️ Please do not leave the tab!");
+    }
+});
 </script>
