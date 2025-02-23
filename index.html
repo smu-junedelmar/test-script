@@ -1,7 +1,7 @@
 <script>
-document.addEventListener("visibilitychange", function () {
-    if (document.hidden) {
-        alert("⚠️ Please do not leave the tab!");
-    }
+window.addEventListener("beforeunload", function (event) {
+    event.preventDefault(); // Some browsers require this for custom messages to work
+    event.returnValue = "Are you sure you want to leave this page?";
 });
+
 </script>
