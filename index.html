@@ -1,44 +1,27 @@
 <script>
-async function sendLogToAppInsights(message, severity = "Information") {
-    const apiKey = "uoz45fopfodha5idiip6t3ywzyyk8o48gah5orwf"; // Replace with your API Key
-    const appId = "89944f95-3ce9-47d7-87f3-1149b4883f8a";   // Replace with your Application Insights App ID
-    
-    const url = `https://api.applicationinsights.io/v1/apps/${appId}/events/customEvents`;
+async function sendLog() {
+    const logData = { description: "User exited CANVAS" };
 
-    const logEntry = {
-        name: "CustomLogEvent",
-        time: new Date().toISOString(),
-        iKey: appId,
-        data: {
-            baseType: "EventData",
-            baseData: {
-                severityLevel: severity,
-                properties: {
-                    message: message
-                }
-            }
-        }
-    };
+    try {
+        const response = await fetch("http://localhost:4000/api/log", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(logData)
+        });
 
-    const response = await fetch(url, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "x-api-key": apiKey
-        },
-        body: JSON.stringify(logEntry)
-    });
-
-    if (response.ok) {
-        console.log("Log sent to Azure Application Insights:", message);
-    } else {
-        console.error("Failed to send log:", response.statusText);
+        const result = await response.json();
+        document.getElementById("status").innerText = result.message || "Log sent!";
+    } catch (error) {
+        document.getElementById("status").innerText = "Failed to send log.";
+        console.error("Error sending log:", error);
     }
 }
 // Detect tab switching
 document.addEventListener("visibilitychange", function () {
     if (document.hidden) {
-        sendLogToAppInsights("This is a free log using Application Insights API Key.");
+        sendLog();
     }
 });
 
