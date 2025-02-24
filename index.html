@@ -1,27 +1,44 @@
-<script src="https://js.monitor.azure.com/scripts/b/ai.2.min.js"></script>
 <script>
-    var appInsights = window.appInsights || function(config){
-        function s(config){t[config] = function(){var i = arguments; t.queue.push(function(){t[config].apply(t,i)})}}
-        var t = {config:config}, r = document, f = window, e = "script", o = r.createElement(e), i, u;
-        for(o.src=config.url||"https://js.monitor.azure.com/scripts/b/ai.2.min.js",r.getElementsByTagName(e)[0].parentNode.appendChild(o),t.cookie=r.cookie,t.queue=[],i=["Event","Exception","Metric","PageView","Trace","DependencyData","Flush"],u=0;u<i.length;u++)s("track"+i[u]);
-        return t
-    }({
-        instrumentationKey: "uoz45fopfodha5idiip6t3ywzyyk8o48gah5orwf"
+async function sendLogToAppInsights(message, severity = "Information") {
+    const apiKey = "uoz45fopfodha5idiip6t3ywzyyk8o48gah5orwf"; // Replace with your API Key
+    const appId = "89944f95-3ce9-47d7-87f3-1149b4883f8a";   // Replace with your Application Insights App ID
+    
+    const url = `https://api.applicationinsights.io/v1/apps/${appId}/events/customEvents`;
+
+    const logEntry = {
+        name: "CustomLogEvent",
+        time: new Date().toISOString(),
+        iKey: appId,
+        data: {
+            baseType: "EventData",
+            baseData: {
+                severityLevel: severity,
+                properties: {
+                    message: message
+                }
+            }
+        }
+    };
+
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey
+        },
+        body: JSON.stringify(logEntry)
     });
 
-    window.appInsights = appInsights;
-    appInsights.trackPageView();
-
-    function sendLog(message) {
-        appInsights.trackTrace({ message: message });
+    if (response.ok) {
         console.log("Log sent to Azure Application Insights:", message);
+    } else {
+        console.error("Failed to send log:", response.statusText);
     }
-</script>
-<script>
-
+}
+// Detect tab switching
 document.addEventListener("visibilitychange", function () {
     if (document.hidden) {
-        sendLog("This is a free log from Vanilla JS!");
+        sendLogToAppInsights("This is a free log using Application Insights API Key.");
     }
 });
 
