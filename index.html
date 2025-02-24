@@ -3,7 +3,7 @@ async function sendLog() {
     const logData = { description: "User exited CANVAS" };
 
     try {
-        const response = await fetch("http://localhost:4000/api/log", {
+        const response = await fetch("http://13.75.43.195:5000/log", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
