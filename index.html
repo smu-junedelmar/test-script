@@ -1,31 +1,27 @@
+<script src="https://js.monitor.azure.com/scripts/b/ai.2.min.js"></script>
 <script>
-    function logToPastebin(message) {
-    const apiKey = "RstlsR9gkezov5vVZb6tD82sbvNLFJh2"; // Your API key (avoid exposing in public code)
-    
-    fetch("https://pastebin.com/api/api_post.php", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams({
-            api_dev_key: apiKey,
-            api_option: "paste",
-            api_paste_code: `[${new Date().toLocaleString()}] ${message}`,
-            api_paste_private: "1", // 1 = unlisted, 2 = private
-            api_paste_expire_date: "N", // Never expire
-            api_paste_name: "Canvas Quiz Logs"
-        })
-    })
-    .then(response => response.text())
-    .then(data => {
-        console.log("Log URL:", data);
-        document.body.innerHTML += `<p>Log saved: <a href="${data}" target="_blank">${data}</a></p>`;
-    })
-    .catch(error => console.error("Error:", error));
-}
+    var appInsights = window.appInsights || function(config){
+        function s(config){t[config] = function(){var i = arguments; t.queue.push(function(){t[config].apply(t,i)})}}
+        var t = {config:config}, r = document, f = window, e = "script", o = r.createElement(e), i, u;
+        for(o.src=config.url||"https://js.monitor.azure.com/scripts/b/ai.2.min.js",r.getElementsByTagName(e)[0].parentNode.appendChild(o),t.cookie=r.cookie,t.queue=[],i=["Event","Exception","Metric","PageView","Trace","DependencyData","Flush"],u=0;u<i.length;u++)s("track"+i[u]);
+        return t
+    }({
+        instrumentationKey: "uoz45fopfodha5idiip6t3ywzyyk8o48gah5orwf"
+    });
 
-// Detect tab switching
+    window.appInsights = appInsights;
+    appInsights.trackPageView();
+
+    function sendLog(message) {
+        appInsights.trackTrace({ message: message });
+        console.log("Log sent to Azure Application Insights:", message);
+    }
+</script>
+<script>
+
 document.addEventListener("visibilitychange", function () {
     if (document.hidden) {
-        logToPastebin("⚠️ User switched tabs during Canvas Quiz!");
+        sendLog("This is a free log from Vanilla JS!");
     }
 });
 
